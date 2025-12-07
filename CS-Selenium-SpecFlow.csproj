@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>CS_Selenium_SpecFlow</AssemblyName>
+    <RootNamespace>CS_Selenium_SpecFlow</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Test Framework -->
+    <PackageReference Include="NUnit" Version="4.2.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    
+    <!-- Reqnroll (SpecFlow successor for .NET 8+) -->
+    <PackageReference Include="Reqnroll" Version="2.3.0" />
+    <PackageReference Include="Reqnroll.NUnit" Version="2.3.0" />
+    
+    <!-- Selenium -->
+    <PackageReference Include="Selenium.WebDriver" Version="4.25.0" />
+    <PackageReference Include="Selenium.Support" Version="4.25.0" />
+    <PackageReference Include="DotNetSeleniumExtras.WaitHelpers" Version="3.11.0" />
+        
+    <!-- REST API Testing -->
+    <PackageReference Include="RestSharp" Version="112.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="FluentAssertions" Version="6.12.1" />
+    <PackageReference Include="JsonSchema.Net" Version="7.2.3" />
+    
+    <!-- Reporting -->
+    <PackageReference Include="ExtentReports" Version="5.0.4" />
+    
+    <!-- Configuration -->
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.0" />
+    
+    <!-- Logging -->
+    <PackageReference Include="Serilog" Version="4.0.2" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.0" />
+    
+    <!-- Code Coverage -->
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Copy config files to output -->
+    <None Update="Config\appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Config\appsettings.*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Locators\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\**\*.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  
+</Project>

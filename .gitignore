@@ -1,0 +1,121 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.sln.docstates
+*.suo
+*.cache
+*.vspscc
+*.vssscc
+
+# Rider files
+.idea/
+
+# VS Code files
+.vscode/
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+!packages/repositories.config
+
+# Test results
+TestResults/
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+
+# Reports
+Reports/
+allure-results/
+allure-report/
+
+# Screenshots
+Screenshots/
+
+# Logs
+Logs/
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# JetBrains Rider
+*.sln.iml
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TeamCity
+.TeamCity/
+
+# DotCover
+*.dotCover
+
+# AxoCover
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Lock files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Backup files
+*.bak
+*.orig
+
+# Selenium WebDriver
+chromedriver*
+geckodriver*
+msedgedriver*

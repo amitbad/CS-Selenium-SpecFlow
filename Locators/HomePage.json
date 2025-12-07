@@ -1,0 +1,41 @@
+{
+  "pageName": "HomePage",
+  "pageUrl": "/",
+  "locators": {
+    "logo": {
+      "type": "css",
+      "value": ".logo, #logo",
+      "description": "Site logo"
+    },
+    "navigationMenu": {
+      "type": "css",
+      "value": "nav, .navigation",
+      "description": "Main navigation menu"
+    },
+    "searchInput": {
+      "type": "css",
+      "value": "input[type='search'], #search",
+      "description": "Search input field"
+    },
+    "searchButton": {
+      "type": "css",
+      "value": "button[type='submit'], .search-btn",
+      "description": "Search submit button"
+    },
+    "userProfileDropdown": {
+      "type": "css",
+      "value": ".user-profile, #user-menu",
+      "description": "User profile dropdown"
+    },
+    "logoutButton": {
+      "type": "css",
+      "value": "#logout, .logout-btn",
+      "description": "Logout button"
+    },
+    "welcomeMessage": {
+      "type": "css",
+      "value": ".welcome-message, #welcome",
+      "description": "Welcome message text"
+    }
+  }
+}

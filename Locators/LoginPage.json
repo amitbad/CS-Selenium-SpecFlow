@@ -1,0 +1,41 @@
+{
+  "pageName": "LoginPage",
+  "pageUrl": "/login",
+  "locators": {
+    "usernameInput": {
+      "type": "id",
+      "value": "username",
+      "description": "Username input field"
+    },
+    "passwordInput": {
+      "type": "id",
+      "value": "password",
+      "description": "Password input field"
+    },
+    "loginButton": {
+      "type": "css",
+      "value": "button[type='submit']",
+      "description": "Login submit button"
+    },
+    "rememberMeCheckbox": {
+      "type": "id",
+      "value": "remember-me",
+      "description": "Remember me checkbox"
+    },
+    "forgotPasswordLink": {
+      "type": "linkText",
+      "value": "Forgot Password?",
+      "description": "Forgot password link"
+    },
+    "errorMessage": {
+      "type": "css",
+      "value": ".error-message",
+      "description": "Error message container"
+    },
+    "loginForm": {
+      "type": "id",
+      "value": "login-form",
+      "description": "Login form container"
+    }
+  }
+}

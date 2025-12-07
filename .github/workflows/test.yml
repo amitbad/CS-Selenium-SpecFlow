@@ -1,0 +1,175 @@
+name: Test Automation
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Test Environment'
+        required: true
+        default: 'Staging'
+        type: choice
+        options:
+          - Development
+          - Staging
+          - Production
+      browser:
+        description: 'Browser'
+        required: true
+        default: 'Chrome'
+        type: choice
+        options:
+          - Chrome
+          - Firefox
+          - Edge
+      tags:
+        description: 'Test Tags (e.g., @smoke, @regression)'
+        required: false
+        default: ''
+
+env:
+  DOTNET_VERSION: '10.0.x'
+  TEST_ENVIRONMENT: ${{ github.event.inputs.environment || 'Staging' }}
+  BROWSER_TYPE: ${{ github.event.inputs.browser || 'Chrome' }}
+  BROWSER_HEADLESS: 'true'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Setup Chrome
+      if: env.BROWSER_TYPE == 'Chrome'
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: stable
+
+    - name: Setup Firefox
+      if: env.BROWSER_TYPE == 'Firefox'
+      uses: browser-actions/setup-firefox@v1
+      with:
+        firefox-version: latest
+
+    - name: Setup Edge
+      if: env.BROWSER_TYPE == 'Edge'
+      uses: browser-actions/setup-edge@v1
+      with:
+        edge-version: stable
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+
+    - name: Run Tests
+      run: |
+        if [ -n "${{ github.event.inputs.tags }}" ]; then
+          dotnet test --no-build --configuration Release \
+            --logger "trx;LogFileName=test-results.trx" \
+            --logger "html;LogFileName=test-results.html" \
+            --results-directory ./TestResults \
+            --filter "Category=${{ github.event.inputs.tags }}"
+        else
+          dotnet test --no-build --configuration Release \
+            --logger "trx;LogFileName=test-results.trx" \
+            --logger "html;LogFileName=test-results.html" \
+            --results-directory ./TestResults
+        fi
+      env:
+        TEST_ENVIRONMENT: ${{ env.TEST_ENVIRONMENT }}
+        BROWSER_TYPE: ${{ env.BROWSER_TYPE }}
+        BROWSER_HEADLESS: ${{ env.BROWSER_HEADLESS }}
+        APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+        API_BASE_URL: ${{ secrets.API_BASE_URL }}
+        TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
+        TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+        API_KEY: ${{ secrets.API_KEY }}
+
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: |
+          ./TestResults/
+          ./Reports/
+        retention-days: 30
+
+    - name: Upload Screenshots
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: screenshots
+        path: ./Reports/Screenshots/
+        retention-days: 7
+
+    - name: Generate Allure Report
+      uses: simple-elf/allure-report-action@master
+      if: always()
+      with:
+        allure_results: allure-results
+        allure_history: allure-history
+        keep_reports: 20
+
+    - name: Deploy Allure Report to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: always() && github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_branch: gh-pages
+        publish_dir: allure-history
+
+  smoke-tests:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Setup Chrome
+      uses: browser-actions/setup-chrome@v1
+      with:
+        chrome-version: stable
+
+    - name: Restore and Build
+      run: |
+        dotnet restore
+        dotnet build --no-restore --configuration Release
+
+    - name: Run Smoke Tests
+      run: |
+        dotnet test --no-build --configuration Release \
+          --filter "Category=smoke" \
+          --logger "trx;LogFileName=smoke-results.trx" \
+          --results-directory ./TestResults
+      env:
+        BROWSER_HEADLESS: 'true'
+        TEST_ENVIRONMENT: 'Staging'
+        APP_BASE_URL: ${{ secrets.APP_BASE_URL }}
+        API_BASE_URL: ${{ secrets.API_BASE_URL }}
+
+    - name: Upload Smoke Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: smoke-test-results
+        path: ./TestResults/
+        retention-days: 7
