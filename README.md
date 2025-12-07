@@ -106,7 +106,7 @@ CS-Selenium-SpecFlow/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/CS-Selenium-SpecFlow.git
+git clone https://github.com/amitbad/CS-Selenium-SpecFlow.git
 cd CS-Selenium-SpecFlow
 ```
 
