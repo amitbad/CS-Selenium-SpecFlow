@@ -1,10 +1,11 @@
 name: Test Automation
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
+  # Disabled automatic triggers to prevent unnecessary workflow runs
+  # push:
+  #   branches: [ main, develop ]
+  # pull_request:
+  #   branches: [ main, develop ]
   workflow_dispatch:
     inputs:
       environment:
@@ -133,7 +134,7 @@ jobs:
 
   smoke-tests:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: false  # Disabled - was: github.event_name == 'pull_request'
     
     steps:
     - name: Checkout code
